@@ -1,0 +1,8 @@
+{% for enrollment in enrollments%}
+<li class="list-group-item">
+    <a href="">{{enrollment.course}}</a>
+</li>
+{%empty%}
+<li class="list-group-item">
+    <p>Você ainda não possui cursos</p>
+</li> {%endfor%}

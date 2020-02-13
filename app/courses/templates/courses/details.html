@@ -1,0 +1,47 @@
+{% extends "home.html"%} {% load static%}{% block content %} {% block jumb%}{{block.super}} {% block jumb_content%}
+<h1>{{course.name}}</h1>
+<p>{{course.description}}</p>
+{%endblock%}
+<div class="container frame">
+    <div class="col-sm images">
+        {% if course.image %}
+        <img src="{{course.image.url}} " alt="{{ course.name }} " class="video-thumbnails"> {%else%}
+        <img src="{% static 'img/course-image.jpg'%} " alt="{{ course.name }} "> {%endif%}
+        <div class="overlay">
+            <a style="color:white;" class="a-link" href="{% url 'enrollment' course.slug %}">Inscreva-se no Curso</a>
+        </div>
+    </div>
+    <div class="container container-about">
+        <h2 class="h4">{{course.about}}</h2>
+    </div>
+</div>
+{%endblock%}
+<hr>
+<div class="container form-container mb-3">
+    <h3 class="h3 text-center">Tire suas dúvidas sobre o curso</h3>
+    <form class="text-center border border-light p-5 " action="#contato " method="POST ">
+        {% csrf_token %}
+        <fieldset class=" ">
+            {% if is_valid %}
+            <p>Formulário enviado com Sucesso</p>
+            {% endif %} {% for field in form%}
+            <div class="d-flex justify-content-center ">
+                <label>{{field.label_tag}}</label>
+                <p>{{field}}</p>
+
+                {% if field.errors%}
+                <ul class=" errorlist ">
+                    {% for error in field.errors%}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {%endif%}
+            </div>
+            {%endfor%}
+        </fieldset>
+        <button class=" btn btn-info my-4 " type=" submit ">Enviar</button>
+    </form>
+</div>
+
+
+{% endblock%}

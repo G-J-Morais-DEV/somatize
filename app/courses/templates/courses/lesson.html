@@ -1,0 +1,13 @@
+{% extends 'course_dashboard.html'%} {% block breadcrumb %} {{block.super}}
+<li><span class="mx-1">/</span></li>
+<li class="breadcrumb-item active" aria-current="page">
+    <a href="{% url 'lessons' course.slug %}">Aulas</a>
+</li>
+<li><span class="mx-1">/</span></li>
+<li class="breadcrumb-item active" aria-current="page">
+    <a href="{% url 'lesson' course.slug pk=lesson.pk %}">{{lesson}</a>
+</li>
+{%endblock%} {% block dashboard%}
+<a href="{% url 'lesson' course.slug pk=lesson.pk %}">{{lesson}}</a> {{lesson.description|linebreaks}} {% for material in lesson.materials.all%} {% cycle '' 'table-striped'%} {{material}} {% if material.is_embedded%} {%else%}
+<p>Baixar</p>
+{{material.file.url}} {%endif%} {% endfor%} {% endblock%}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %} {% block content%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">
+            <a href="{% url 'home'%}">Início</a>
+        </li>
+        <li class="mx-2">/</li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a href="{% url 'forum'%}">Fórum de Discussão</a>
+        </li>
+    </ol>
+</nav><!--  -->
+
+
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="http://">Tópicos do Fórum</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?order=">Mais Recentes</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?order=views">Mais Visualizados</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?order=answers">Mais Comentados</a>
+        </li>
+        <li class="list-group-item">
+            Tags
+        </li>
+        <li class="list-group-item">
+            {%for tag in tags%}
+            <a href="{% url 'forum-tagged' tag.slug %}">{{tag}}</a>
+            <!-- Colocar essa url onde tem tag -->
+            {% endfor%}
+        </li>
+
+    </ul>
+</div>
+<p></p>
+{% for thread in object_list%}
+<h2 class="h2">
+    <a href="{{ thread.get_absolute_ulr }}">{{thread.title}}</a>
+</h2>
+<p>
+    Criado por
+    <strong>
+        {{thread.author}}
+    </strong>| {{thread.answers}}resposta{{thread.answers.|pluralize}} | {{thread.views}}
+    Visualizaç{{thread.views|pluralize:"ão,ões"}}
+</p>
+<h2 class="h2">Tags</h2>
+{% for tag in thread.tags.all%}
+<a href="{% url 'forum-tagged' tag.slug %}">{{tag}} {% if not forloop.last%}, {% endif %} {% endfor%}</a>
+<a href="{{ thread.get_absolute_ulr }}">Atualizado a {{thread.modified|timesince}} atrás</a> {% endfor%}
+<ul>
+    {%if page_obj.has_previous%}
+    <li>
+        <a
+            href="?page={{page_obj.previous_page_number}}{% if request.GET.order%}&order={{request.GET.order}}{%endif%}">Anterior</a>
+    </li>
+    {%endif%} {% for page in paginator.page_range%}
+
+    <li>
+        <a href="?page={{page}}{% if request.GET.order%}&order={{request.GET.order}}{%endif%}">{{page}}</a>
+    </li>
+    {%if page_obj.has_next%}
+    <li>
+        <a
+            href="?page={{page_obj.next_page_number}}{% if request.GET.order%}&order={{request.GET.order}}{%endif%}">Pŕoxima</a>
+    </li>
+    {%endif%} {%endfor%}
+</ul>
+{% endblock %}

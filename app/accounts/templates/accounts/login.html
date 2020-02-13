@@ -1,0 +1,40 @@
+{% extends 'home.html'%} {% load static%} {% block content%} {% block jumb%}{{block.super}} {%endblock%}
+<!-- Default form login -->
+<div class="container col-sm-8">
+    <form class="text-center border border-light p-5" action="{% url 'login'%}" method="POST">
+        {% csrf_token%}
+        <p class="h4 mb-4">Entrar</p>
+
+        <fieldset>
+            {{form.non_field_errors}} {% for field in form%}
+            <div>
+                {{field.label_tag}} {{field}} {{field.errors}}
+            </div>
+            {% endfor%}
+        </fieldset>
+        <div class="d-flex justify-content-around">
+            <div>
+                <!-- Remember me -->
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                    <label class="custom-control-label" for="defaultLoginFormRemember">Continuar conectado</label>
+                </div>
+            </div>
+            <div>
+                <!-- Forgot password -->
+                <a href="{% url 'password_reset'%}">Esqueceu sua senha?</a>
+            </div>
+        </div>
+        <!-- Sign in button -->
+        <button class="btn btn-info btn-block my-4" type="submit">Entrar</button>
+
+        <!-- Register -->
+        <p>Ainda não é aluno?
+            <a href="{% url 'register' %}">Registre-se</a>
+        </p>
+
+    </form>
+    <!-- Default form login -->
+</div>
+
+{% endblock%}

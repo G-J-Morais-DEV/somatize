@@ -1,0 +1,8 @@
+{% extends "courses/course_dashboard.html"%} {% block dashboard_content%}
+<form class="text-center border border-light p-5" action="{% url 'undo_enrollment' enrollment.course.slug %}" method="POST">
+    {% csrf_token%}
+    <h3 class="h3">Deseja cancelar a Inscrição?</h3>
+    <button class="btn btn-info btn-block my-4" type="submit">Confirmar</button>
+    <a class="btn btn-red btn-block my-4" href="{% url 'announcements' course.slug%}">Cancelar</a>
+</form>
+{% endblock%}

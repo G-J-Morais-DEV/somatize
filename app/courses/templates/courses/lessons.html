@@ -1,0 +1,9 @@
+{% extends 'courses/course_dashboard.html' %} {% block breadcrumb %} {{block.super}}
+<li><span class="mx-1">/</span></li>
+<li class="breadcrumb-item active" aria-current="page">
+    <a href="{% url 'lessons' course.slug %}">Aulas</a>
+</li>
+{%endblock%} {% block dashboard%} {% for lesson in course.release_lessons%} {{lesson}}
+<a href="{% url 'lesson' course.slug pk=lesson.pk %}">Acessar Aula</a> {{lesson.description|truncatewords:20}} {%empty%}
+<p>Nenhuma aula Disponível</p>
+{% endfor%} {% endblock%}

@@ -1,0 +1,72 @@
+{% extends 'base.html'%} {% load static%} {% load courses_tags%}{% block content%} {% load_my_courses user as enrollments%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% block breadcrumb %}
+        <li class="breadcrumb-item active" aria-current="page">
+            <a href="{% url 'dashboard' %}">Meu Painel</a>
+        </li>
+        {%endblock%}
+    </ol>
+</nav>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <span>Bem vindo, {{user}}</span>
+            <ul class="list-group">
+
+                <li class="list-group-item">
+                    <a href="{% url 'dashboard' %}">Meus Cursos</a> {% block menu_options%}
+                    <ul class="list-group">
+                        {% for enrollment in enrollments%}
+                        <li class="list-group-item">
+
+                            <a href="{% url 'announcements' enrollment.course.slug %}">
+                                <i class="fa fa-book"></i> {{enrollment.course}}</a>
+                        </li>
+                        {%empty%}
+                        <li class="list-group-item">
+                            Nenhum Curso Encontrado
+                        </li>
+                        {%endfor%}
+                    </ul>
+
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'edit'%}">
+                        <i class="fa fa-cog"></i> Editar Meus Dados
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'edit_password' %}">
+                        <i class="fa fa-lock"></i> Editar minha Senha</a>
+                </li>
+
+            </ul>
+            {%endblock%}
+        </div>
+        <div class="col">
+
+            <h2 class="h2">Meus Cursos</h2>
+            {% block dashboard_content%} {% for enrollment in enrollments%}
+            <div class="container">
+                <h3 class="h3">
+                    {{enrollment.course}} ({{enrollment.course.start_date|date:'d/m/Y'|default:'Sem data'}})
+                </h3>
+                <p>
+                    {{enrollment.course.description|linebreaks}}
+                </p>
+                <div class="container">
+                    <a href="{% url 'announcements' enrollment.course.slug  %}" class="btn btn-primary">Acessar o
+                        Curso</a>
+                    <a href="{% url 'undo_enrollment' enrollment.course.slug %}" class="btn btn-red">Cancelar
+                        Inscrição</a>
+                </div>
+            </div>
+            {%empty%}
+            <span>
+                <p>Nenhum Curso encontrado</p>
+            </span> {%endfor%} {%endblock%}
+        </div>
+    </div>
+</div>
+{%endblock%}

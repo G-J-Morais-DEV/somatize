@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% block content%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">
+            <a href="{% url 'home'%}">Início</a>
+        </li>
+        <li class="mx-2">/</li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a href="{% url 'forum'%}">Fórum de Discussão</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a href="{{object.get_absolute_url}}">{{object}}</a>
+        </li>
+    </ol>
+
+</nav>
+<p>Fórum</p>
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="http://">Tópicos do Fórum</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?order=">Mais Recentes</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?order=views">Mais Visualizados</a>
+        </li>
+        <li class="list-group-item">
+            <a href="?order=answers">Mais Comentados</a>
+        </li>
+        <li class="list-group-item">
+            Tags
+        </li>
+        <li class="list-group-item">
+            {%for tag in tags%}
+            <a href="{% url 'forum-tagged' tag.slug %}">{{tag}}</a>
+            <!-- Colocar essa url onde tem tag -->
+            {% endfor%}
+        </li>
+
+        <div class="container">
+            <h2>{{object}}</h2>
+            {{object.body|linebreaks}}
+            <p>Criado por <strong>{{object.author}}</strong></p>
+        </div>
+        <h2 class="h2">Tags</h2>
+        {% for tag in object.tags.all%}
+        <a href="{% url 'forum-tagged' tag.slug %}">{{tag}} {% if not forloop.last%}, {% endif %} {% endfor%}</a>
+        <p>Criado a {{object.created|timesince}}</p>
+        <p>Repostas</p>
+        <div class="container">
+            {% for reply in object.replies.all%}
+            <hr>
+            <p>
+                <strong>{{reply.author}}</strong>disse à {{reply.created|timesince}} atrás: {{reply.reply|linebreaksbr}
+                <br>{% if reply.correct%}
+                <br> {% if object.author == user%}
+                <a href="{% url 'reply_incorrect' pk=reply.pk%}" class="btn btn-primary">Cancelar resposta Correta</a> {%endif%} {% elif reply.author == user%}
+                <a href="{% url 'reply_correct' pk=reply.pk %}" class="btn btn-red">Resposta Correta</a> {%endif%}
+                <span>Resposta indicada pelo Autor</span> {%endif%}
+            </p>
+            {% endfor%}
+        </div>
+        <p>Responder ao Tópico</p>
+        <form class="text-center border border-light p-5" action="." method="POST">
+            {%csrf_token%} {% for field in form%} {{field.label_tag}} {{field}} {{field.errors}} {% endfor%}
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+        {% endblock%}

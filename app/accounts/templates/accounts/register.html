@@ -1,0 +1,28 @@
+{% extends 'base.html'%} {% load static%} {% block content%}
+<!-- Default form login -->
+<div class="container col-sm-8">
+    <form class="text-center border border-light p-5" action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+        <p class="h4 mb-4">Registrar-se</p>
+        <fieldset>
+            {{form.non_field_errors}} {% for field in form%}
+            <div>
+                {{field.label_tag}} {{field}} {{field.errors}}
+            </div>
+            {% endfor%}
+        </fieldset>
+        <!-- <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Senha"> -->
+        <button class="btn btn-info btn-block my-4" type="submit">Registro</button>
+        <!-- Social login -->
+        <!-- <p>or sign in with:</p>
+
+        <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
+        <a href="#" class="mx-2" role="button"><i class="fab fa-twitter light-blue-text"></i></a>
+        <a href="#" class="mx-2" role="button"><i class="fab fa-linkedin-in light-blue-text"></i></a>
+        <a href="#" class="mx-2" role="button"><i class="fab fa-github light-blue-text"></i></a> -->
+
+    </form>
+    <!-- Default form login -->
+</div>
+
+{% endblock%}

@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block content%} {% load static%} {% block jumb%}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        {% block jumb_content%}
+        <h1>Plataforma Somatize</h1>
+        <p>Melhores Cursos para Você!</p>
+        {%endblock%}
+    </div>
+</div>
+{%endblock%}
+<!-- Cards Infusion -->
+
+<!-- Cards video youtube -->
+<div class="container">
+    <div class="row justify-content-center">
+        {% for course in courses%}
+        <div class="col-md-3 col-sm-6">
+            <div class="card text-center">
+                <div class="card-block">
+                    <div class="inner">
+                        <img src="{{course.image.url}}" alt="" class="card-img-top">
+                    </div>
+                    <div class="card-title">
+                        <h4>{{course.title}}</h4>
+                    </div>
+                    <div class="card-text">{{course.description}}</div>
+
+                </div>
+                <a style="margin-top: 10px;" href="{{course.get_absolute_url}}" class="btn btn-block btn-info">Saiba
+                    Mais</a>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+
+{% endblock%}
